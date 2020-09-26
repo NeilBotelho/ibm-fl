@@ -41,7 +41,7 @@ class KerasDataHandler(DataHandler):
         :rtype: `tuple`
         """
         num_classes = 2
-        img_rows, img_cols = 224, 224
+        img_rows, img_cols = 112,112
         # if self.file_name is None:
         #     (x_train, y_train), (x_test, y_test) = load_mnist()
         #     # Reduce datapoints to make test faster
@@ -75,5 +75,5 @@ class KerasDataHandler(DataHandler):
 
         # convert class vectors to binary class matrices
         y_train = (np.eye(num_classes)[y_train]).squeeze()
-        y_test = np.eye(num_classes)[y_test]
+        y_test = np.eye(num_classes)[y_test].squeeze()
         return (x_train, y_train), (x_test, y_test)
