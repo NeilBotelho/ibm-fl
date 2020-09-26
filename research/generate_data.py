@@ -52,7 +52,7 @@ def readFile(path):
         label=1
     else:
         label=0
-    return np.array(Image.open(path)),label
+    return np.array(Image.open(path).resize((112,112))),label
 
 
 def load_data(normalize=False,data_dir="research/source_data"):
@@ -65,7 +65,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     train_files=[x for x in (train/"benign").iterdir()]+[x for x in (train/"malignant").iterdir()]
     train_files=train_files[:200]
     random.shuffle(train_files)
-    x_train=np.zeros((len(train_files),224,224,3))
+    x_train=np.zeros((len(train_files),112,112,3))
     y_train=np.zeros((len(train_files),1),dtype=int)
     for idx,x in enumerate(train_files):
         x_train[idx],y_train[idx]=readFile(x)
@@ -76,7 +76,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     test_files=[x for x in (test/"benign").iterdir()]+[x for x in (test/"malignant").iterdir()]
     test_files=test_files[:100]
     random.shuffle(test_files)
-    x_test=np.zeros((len(test_files),224,224,3),dtype=int)
+    x_test=np.zeros((len(test_files),112,112,3),dtype=int)
     y_test=np.zeros((len(test_files),1),dtype=int)
     for idx,x in enumerate(test_files):
         x_test[idx],y_test[idx]=readFile(x)

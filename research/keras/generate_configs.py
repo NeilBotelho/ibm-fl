@@ -73,7 +73,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
     if is_agg:
         return None
     num_classes = 2
-    img_rows, img_cols = 224, 224
+    img_rows, img_cols = 112,112
     if K.image_data_format() == 'channels_first':
         input_shape = (3, img_rows, img_cols)
     else:
