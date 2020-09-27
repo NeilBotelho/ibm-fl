@@ -77,3 +77,37 @@ class KerasDataHandler(DataHandler):
         y_train = (np.eye(num_classes)[y_train]).squeeze()
         y_test = np.eye(num_classes)[y_test].squeeze()
         return (x_train, y_train), (x_test, y_test)
+
+
+class KerasDataGenerator(DataHandler):
+
+    def __init__(self, data_config):
+        super().__init__()
+
+        (X_train, y_train), (X_test, y_test) = load_mnist()
+        X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
+        X_train = X_train.astype('float32')
+        X_train /= 255
+        X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
+        X_test = X_test.astype('float32')
+        X_test /= 255
+
+        y_train = np_utils.to_categorical(y_train)
+        y_test = np_utils.to_categorical(y_test)
+        train_gen = ImageDataGenerator(rotation_range=8,
+                                       width_shift_range=0.08,
+                                       shear_range=0.3,
+                                       height_shift_range=0.08,
+                                       zoom_range=0.08)
+        test_gen = ImageDataGenerator()
+
+        self.train_datagenerator = train_gen.flow(
+            X_train, y_train, batch_size=64)
+        self.test_datagenerator = train_gen.flow(X_test, y_test, batch_size=64)
+
+    def get_data(self):
+
+        return self.train_datagenerator, self.test_datagenerator
+
+    def set_batch_size(self, batch_size):
+        self.train_datagenerator.set_batch_size(batch_size)
