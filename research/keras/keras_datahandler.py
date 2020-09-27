@@ -41,7 +41,8 @@ class KerasDataHandler(DataHandler):
         :rtype: `tuple`
         """
         num_classes = 2
-        img_rows, img_cols = 112,112
+        IMG_SIZE=112
+        img_rows, img_cols = IMG_SIZE,IMG_SIZE
         # if self.file_name is None:
         #     (x_train, y_train), (x_test, y_test) = load_mnist()
         #     # Reduce datapoints to make test faster
