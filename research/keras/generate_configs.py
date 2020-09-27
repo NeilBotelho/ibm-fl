@@ -112,7 +112,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
 
     model = {
         'name': 'KerasFLModel',
-        'path': 'ibmfl.model.keras_fl_model',
+        'path': 'research.models.custom_keras_model',
         'spec': spec
     }
 
