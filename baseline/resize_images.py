@@ -10,7 +10,7 @@ inputfolder="source_data/data/" #enter the name of the folder where test and tra
 
 output_folder="source_data/" #enter the directory where all the processed data is to be stored
 #inside it 3 directories will be created to store, equalized, resized images, and npy files
-#equalized images are already resized see line 28 if you don't want them resized
+#equalized images are already resized see line 39 if you don't want them resized
 
 
 outputfolder_processed=os.path.join(output_folder,"processed/") #name of the output folder for processed images
