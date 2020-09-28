@@ -294,6 +294,11 @@ class KerasFLModel(FLModel):
                     dict_metrics[name] = metric
             else:
                 dict_metrics[names[0]] = metrics
+        filename = f"metrics_{self.model_type}"
+        full_path = super().get_model_absolute_path(filename)
+        with open(full_path,"w") as f:
+            for metric in dict_metrics:
+                f.write(f"{str(metric)}:{dict_metrics[metric]}\n")
         return dict_metrics
 
     def evaluate_generator_model(self, test_generator, batch_size=128, **kwargs):
