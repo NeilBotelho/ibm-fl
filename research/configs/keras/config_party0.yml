@@ -1,0 +1,29 @@
+aggregator:
+  ip: 127.0.0.1
+  port: 5000
+connection:
+  info:
+    ip: 127.0.0.1
+    port: 8085
+    tls_config:
+      enable: false
+  name: FlaskConnection
+  path: ibmfl.connection.flask_connection
+  sync: false
+data:
+  info:
+    npz_file: research/data/te2_50/data_party0.npz
+  name: KerasDataHandler
+  path: research.keras.keras_datahandler
+local_training:
+  name: FedAvgLocalTrainingHandler
+  path: ibmfl.party.training.fedavg_local_training_handler
+model:
+  name: KerasFLModel
+  path: research.models.custom_keras_model
+  spec:
+    model_definition: research/configs/keras/compiled_keras.h5
+    model_name: keras-cnn
+protocol_handler:
+  name: PartyProtocolHandler
+  path: ibmfl.party.party_protocol_handler

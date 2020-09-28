@@ -1,0 +1,31 @@
+connection:
+  info:
+    ip: 127.0.0.1
+    port: 5000
+    tls_config:
+      enable: false
+  name: FlaskConnection
+  path: ibmfl.connection.flask_connection
+  sync: false
+data:
+  info:
+    npz_file: research/source_data/train
+  name: KerasDataHandler
+  path: research.keras.keras_datahandler
+fusion:
+  name: FedAvgFusionHandler
+  path: ibmfl.aggregator.fusion.fedavg_fusion_handler
+hyperparams:
+  global:
+    max_timeout: 60
+    parties: 2
+    rounds: 3
+    termination_accuracy: 0.9
+  local:
+    optimizer:
+      lr: 0.01
+    training:
+      epochs: 3
+protocol_handler:
+  name: ProtoHandler
+  path: ibmfl.aggregator.protohandler.proto_handler
