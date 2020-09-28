@@ -23,16 +23,18 @@ def get_datahandler_config(dh_name, folder_data, party_id, is_agg):
 
 def get_fusion_config():
     fusion = {
-        'name': 'IterAvgFusionHandler',
-        'path': 'ibmfl.aggregator.fusion.iter_avg_fusion_handler'
+        'name': 'FedAvgFusionHandler',
+        'path': 'ibmfl.aggregator.fusion.fedavg_fusion_handler'
     }
     return fusion
 
 
 def get_local_training_config():
     local_training_handler = {
-        'name': 'LocalTrainingHandler',
-        'path': 'ibmfl.party.training.local_training_handler'
+        # 'name': 'LocalTrainingHandler',
+        'name': 'FedAvgLocalTrainingHandler',
+        # 'path': 'ibmfl.party.training.local_training_handler'
+        'path': 'ibmfl.party.training.fedavg_local_training_handler'
     }
     return local_training_handler
 
