@@ -75,7 +75,7 @@ class KerasFLModel(FLModel):
             self.is_keras = False
 
         # Default values for local training
-        self.batch_size = 12
+        self.batch_size = 80 # Make this 10 or lower if you get memory errors
         self.epochs = 1
         self.steps_per_epoch = 100
 
