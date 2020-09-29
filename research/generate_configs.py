@@ -44,7 +44,7 @@ def setup_parser():
                    help="Dataset code from examples", type=str, required=True)
 
     p.add_argument("--data_path", "-p", help=PATH_CONFIG_DESC, required=True)
-    p.add_argument("--model", "-m", choices=[os.path.basename(d) for d in FL_EXAMPLES],
+    p.add_argument("--model", "-m",
                    help=MODEL_CONFIG_DESC, required=True)
     p.add_argument("--create_new", "-new", action="store_true", help=NEW_DESC)
     p.add_argument("--name", help=NAME_DESC)
