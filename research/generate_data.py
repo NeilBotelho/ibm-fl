@@ -82,6 +82,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
         x_test[idx],y_test[idx]=readFile(x)
     if(normalize):
         x_test=(x_test-x_test.mean())/x_test.std()
+    x_train,x_test=(x_train/255,x_test/255)
     return (x_train, y_train), (x_test, y_test)
 
 def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
