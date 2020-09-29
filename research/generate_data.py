@@ -27,15 +27,10 @@ def setup_parser():
     p = argparse.ArgumentParser(description=GENERATE_DATA_DESC)
     p.add_argument("--num_parties", "-n", help=NUM_PARTIES_DESC,
                    type=int, required=True)
-    p.add_argument("--dataset", "-d", choices=FL_DATASETS,
-                   help=DATASET_DESC, required=True)
-    p.add_argument("--data_path", "-p", help=PATH_DESC,
-                   default=os.path.join("examples", "data"))
     p.add_argument("--points_per_party", "-pp", help=PER_PARTY,
                    nargs="+", type=int, required=True)
-    p.add_argument("--stratify", "-s", help=STRATIFY_DESC, action="store_true")
-    p.add_argument("--create_new", "-new", action="store_true", help=NEW_DESC)
-    p.add_argument("--name", help=NAME_DESC)
+    # p.add_argument("--stratify", "-s", help=STRATIFY_DESC, action="store_true")
+    p.add_argument("--name", "-N",help=NAME_DESC,required=True)
     return p
 
 
@@ -85,7 +80,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     x_train,x_test=(x_train/255,x_test/255)
     return (x_train, y_train), (x_test, y_test)
 
-def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
+def save_data(nb_dp_per_party, party_folder, label_probs=None):
     """
     Saves MNIST party data
     :param nb_dp_per_party: the number of data points each party should have
@@ -168,11 +163,7 @@ if __name__ == '__main__':
 
     # Collect arguments
     num_parties = args.num_parties
-    dataset = args.dataset
-    data_path = args.data_path
     points_per_party = args.points_per_party
-    stratify = args.stratify
-    create_new = args.create_new
     exp_name = args.name
 
     # Check for errors
@@ -183,13 +174,9 @@ if __name__ == '__main__':
 
     # Create folder to save party data
     folder = os.path.join("research", "data")
-    strat = 'balanced' if stratify else 'random'#i.e non IID
 
-    if create_new:
-        folder = os.path.join(folder, exp_name if exp_name else str(
-            int(time.time())) + '_' + strat)
-    else:
-        folder = os.path.join(folder, dataset, strat)
+    folder = os.path.join(folder, exp_name if exp_name else str(
+        int(time.time())))
 
     if not os.path.exists(folder):
         os.makedirs(folder)
@@ -200,7 +187,6 @@ if __name__ == '__main__':
             if os.path.isfile(f_path):
                 os.unlink(f_path)
 
-    if dataset=="cancer":
-        save_data(points_per_party, folder)
+    save_data(points_per_party, folder)
 
 

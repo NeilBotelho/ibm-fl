@@ -10,7 +10,7 @@ PER_PARTY = "the number of data points per party"
 STRATIFY_DESC = "proportionally stratify the data according to the source distribution"
 
 NEW_DESC = "create a new directory for this run based on current time instead of overriding"
-NAME_DESC = "the name of the run (default is current time)"
+NAME_DESC = "the name of the dataset to be generated (default is current time)"
 PER_PARTY_ERR = "points per party must either specify one number of a list equal to num_parties"
 GENERATE_CONFIG_DESC = "generates aggregator and party configuration files"
 PATH_CONFIG_DESC = "path to load saved config data"
