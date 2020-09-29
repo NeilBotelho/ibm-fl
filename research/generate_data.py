@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import sys
 import csv
@@ -22,7 +21,6 @@ INPUT_SIZE=112
 def setup_parser():
     """
     Sets up the parser for Python script
-
     :return: a command line parser
     :rtype: argparse.ArgumentParser
     """
@@ -66,7 +64,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     #Load Train data
     train_files=[x for x in (train/"benign").iterdir()]+[x for x in (train/"malignant").iterdir()]
     random.shuffle(train_files)
-    train_files=train_files[:200]
+    train_files=train_files
     x_train=np.zeros((len(train_files),INPUT_SIZE,INPUT_SIZE,3))
     y_train=np.zeros((len(train_files),1),dtype=int)
     for idx,x in enumerate(train_files):
@@ -77,7 +75,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     #Load Test data
     test_files=[x for x in (test/"benign").iterdir()]+[x for x in (test/"malignant").iterdir()]
     random.shuffle(test_files)
-    test_files=test_files[:100]
+    test_files=test_files
     x_test=np.zeros((len(test_files),INPUT_SIZE,INPUT_SIZE,3),dtype=int)
     y_test=np.zeros((len(test_files),1),dtype=int)
     for idx,x in enumerate(test_files):
@@ -89,7 +87,6 @@ def load_data(normalize=False,data_dir="research/source_data"):
 def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
     """
     Saves MNIST party data
-
     :param nb_dp_per_party: the number of data points each party should have
     :type nb_dp_per_party: `list[int]`
     :param should_stratify: True if data should be assigned proportional to source class distributions
@@ -204,3 +201,5 @@ if __name__ == '__main__':
 
     if dataset=="cancer":
         save_data(points_per_party, folder)
+
+
