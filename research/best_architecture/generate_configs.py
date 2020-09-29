@@ -1,7 +1,7 @@
 import os
 import keras
 from keras import backend as K
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.layers import Dense, Dropout, Flatten
 from keras.models import Sequential
 
