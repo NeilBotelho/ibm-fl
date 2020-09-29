@@ -120,13 +120,21 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
         test_probs = {label: test_counts[int(label)] /
                       float(num_test) for label in te_labels}
 
+    def update_probs_and_data(probs, x, y, indices):
+        probs=np.delete(probs,indices)
+        x=np.delete(x,indices,axis=0)
+        y=np.delete(y,indices,axis=0)
+        #updating the probabilities to get the sum to 1
+        probs=probs/sum(probs)
+        return probs,x,y
 
     for idx, dp in enumerate(nb_dp_per_party):
         print(idx,dp)
         train_p = np.array([train_probs[int(y_train[x])]
                             for x in range(num_train)])
         train_p /= np.sum(train_p)
-        train_indices = np.random.choice(num_train, dp, p=train_p)
+        train_indices = np.random.choice(num_train, dp, p=train_p,replace=False)
+
         test_p = np.array([test_probs[int(y_test[idx])] for idx in range(num_test)])
         test_p /= np.sum(test_p)
 
@@ -146,7 +154,12 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
                  x_test=x_test_pi, y_test=y_test_pi)
 
         print_statistics(idx, x_test_pi, x_train_pi, num_labels, y_train_pi)
-
+        
+        #deleting data that is already used by
+        train_p, x_train, y_train=update_probs_and_data(train_p, x_train, y_train, train_indices)
+        num_train = int(np.shape(y_train)[0])
+        num_test = np.shape(y_test)[0]
+        
         print('Finished! :) Data saved in ', party_folder)
 
 
