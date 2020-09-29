@@ -1,1 +1,4 @@
 baseline/source_data/*
+research/source_data/*
+research/data/*
+research/__pycache__
