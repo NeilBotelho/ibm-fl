@@ -65,8 +65,8 @@ def load_data(normalize=False,data_dir="research/source_data"):
 
     #Load Train data
     train_files=[x for x in (train/"benign").iterdir()]+[x for x in (train/"malignant").iterdir()]
-    train_files=train_files[:200]
     random.shuffle(train_files)
+    train_files=train_files[:200]
     x_train=np.zeros((len(train_files),INPUT_SIZE,INPUT_SIZE,3))
     y_train=np.zeros((len(train_files),1),dtype=int)
     for idx,x in enumerate(train_files):
