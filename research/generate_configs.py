@@ -40,16 +40,17 @@ def setup_parser():
     p = argparse.ArgumentParser(description=GENERATE_CONFIG_DESC)
     p.add_argument("--num_parties", "-n", help=NUM_PARTIES_DESC,
                    type=int, required=True)
-    p.add_argument("--dataset", "-d",
-                   help="Dataset code from examples", type=str, required=True)
+    # p.add_argument("--dataset", "-d",
+                   # help="Dataset code from examples", type=str, required=True)
 
     p.add_argument("--data_path", "-p", help=PATH_CONFIG_DESC, required=True)
     p.add_argument("--model", "-m",
                    help=MODEL_CONFIG_DESC, required=True)
     p.add_argument("--create_new", "-new", action="store_true", help=NEW_DESC)
     p.add_argument("--name", help=NAME_DESC)
-    p.add_argument("--connection", "-c", choices=[os.path.basename(
-        d) for d in FL_CONN_TYPES], help=CONNECTION_TYPE_DESC, required=False, default="flask")
+    # p.add_argument("--connection", "-c", choices=[os.path.basename(
+        # d) for d in FL_CONN_TYPES], help=CONNECTION_TYPE_DESC, required=False, default="flask")
+
     
     return p
 
@@ -208,12 +209,12 @@ if __name__ == '__main__':
 
     # Collect arguments
     num_parties = args.num_parties
-    dataset = args.dataset
+    dataset = "l"
     party_data_path = args.data_path
     model = args.model
     create_new = args.create_new
     exp_name = args.name
-    conn_type = args.connection
+    conn_type = "flask"
 
 
     # Create folder to save configs
