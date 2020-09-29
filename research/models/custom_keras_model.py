@@ -21,7 +21,8 @@ from ibmfl.util import config
 from ibmfl.model.fl_model import FLModel
 from ibmfl.model.model_update import ModelUpdate
 from ibmfl.exceptions import FLException, LocalTrainingException
-
+import matplotlib.pyplot as plt
+from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
@@ -66,6 +67,7 @@ class KerasFLModel(FLModel):
             self.model = keras_model
 
         self.model_type = model_name
+        self.model_name=model_spec['model_name']
         # keras flag
         if issubclass(type(self.model), keras.models.Model):
             self.is_keras = True
@@ -163,11 +165,19 @@ class KerasFLModel(FLModel):
         :type epochs: Integer
         :return: None
         """
+        filename = f"metrics_{time.time()}.png"
+        full_path = Path(super().get_model_absolute_path(""))
+        full_path.joinpath(f"{self.model_name}").mkdir(parents=True, exist_ok=True)
         x = train_data[0]
         y = train_data[1]
         with self.graph.as_default():
             set_session(self.sess)
-            self.model.fit(x, y, batch_size=batch_size, epochs=epochs)
+            history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs)
+        for label in self.model.metrics_names:
+            plt.plot(history.history[label],label=label) 
+        # plt.plot(history.history["loss"],label="loss")
+        plt.legend()
+        plt.savefig(full_path.joinpath(filename))
 
     def fit_generator(self, training_generator, batch_size, epochs, steps_per_epoch=None):
         """
@@ -314,6 +324,8 @@ class KerasFLModel(FLModel):
         :return: metrics
         :rtype: `dict`
         """
+        batch_size=self.batch_size
+
         steps = self.steps_per_epoch
         if 'steps_per_epoch' in kwargs:
             steps = kwargs['steps_per_epoch']
@@ -348,10 +360,11 @@ class KerasFLModel(FLModel):
         :return: filename
         """
         if filename is None:
-            filename = 'model_{}.h5'.format(time.time())
+            filename = f"model_{time.time()}.h5"
 
-        full_path = super().get_model_absolute_path(filename)
-        self.model.save(full_path)#Would be $MODEL_DIR/filename
+        full_path = super().get_model_absolute_path("")
+        full_path.joinpath(f"{self.model_name}").mkdir(parents=True, exist_ok=True)
+        self.model.save(full_path.joinpath(filename))#Would be $MODEL_DIR/filename
         logger.info('Model saved in path: %s.', full_path)
         return filename
 
