@@ -76,8 +76,8 @@ def load_data(normalize=False,data_dir="research/source_data"):
 
     #Load Test data
     test_files=[x for x in (test/"benign").iterdir()]+[x for x in (test/"malignant").iterdir()]
-    test_files=test_files[:100]
     random.shuffle(test_files)
+    test_files=test_files[:100]
     x_test=np.zeros((len(test_files),INPUT_SIZE,INPUT_SIZE,3),dtype=int)
     y_test=np.zeros((len(test_files),1),dtype=int)
     for idx,x in enumerate(test_files):
@@ -135,17 +135,17 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None,resampling=False):
         train_p /= np.sum(train_p)
         train_indices = np.random.choice(num_train, dp, p=train_p,replace=False)
 
-        test_p = np.array([test_probs[int(y_test[idx])] for idx in range(num_test)])
-        test_p /= np.sum(test_p)
-
-        # Split test evenly
-        test_indices = np.random.choice(
-            num_test, int(num_test / nb_parties), p=test_p)
+        #test_p = np.array([test_probs[int(y_test[idx])] for idx in range(num_test)])
+        #test_p /= np.sum(test_p)
+        #
+        ## Split test evenly
+        #test_indices = np.random.choice(
+        #    num_test, int(num_test / nb_parties), p=test_p)
 
         x_train_pi = x_train[train_indices]
         y_train_pi = y_train[train_indices]
-        x_test_pi = x_test[test_indices]
-        y_test_pi = y_test[test_indices]
+        x_test_pi = x_test[0:num_test//nb_parties]
+        y_test_pi = y_test[0:num_test//nb_parties]
 
         # Now put it all in an npz
         name_file = 'data_party' + str(idx) + '.npz'
