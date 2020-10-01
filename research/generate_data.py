@@ -13,7 +13,7 @@ if fl_path not in sys.path:
 
 from ibmfl.util.datasets import load_nursery, load_mnist, load_adult, load_higgs, load_airline
 from research.constants import GENERATE_DATA_DESC, NUM_PARTIES_DESC, DATASET_DESC, PATH_DESC, PER_PARTY, \
-    STRATIFY_DESC, FL_DATASETS, NEW_DESC, PER_PARTY_ERR, NAME_DESC
+    STRATIFY_DESC, FL_DATASETS, NEW_DESC, PER_PARTY_ERR, NAME_DESC, RATIO_PER_PARTY, RATIO_PER_PARTY_ERR
 
 
 INPUT_SIZE=112
@@ -29,6 +29,8 @@ def setup_parser():
                    type=int, required=True)
     p.add_argument("--points_per_party", "-pp", help=PER_PARTY,
                    nargs="+", type=int, required=True)
+    p.add_argument("--ratio_per_party", "-r", help=RATIO_PER_PARTY,
+                   nargs="+", type=float, required=False, default=[None])                   
     # p.add_argument("--stratify", "-s", help=STRATIFY_DESC, action="store_true")
     p.add_argument("--name", "-N",help=NAME_DESC,required=True)
     return p
@@ -164,6 +166,7 @@ if __name__ == '__main__':
     # Collect arguments
     num_parties = args.num_parties
     points_per_party = args.points_per_party
+    ratio_per_party = args.ratio_per_party
     exp_name = args.name
 
     # Check for errors
@@ -171,6 +174,13 @@ if __name__ == '__main__':
         points_per_party = [points_per_party[0] for _ in range(num_parties)]
     elif len(points_per_party) != num_parties:
         parser.error(PER_PARTY_ERR)
+
+    if len(ratio_per_party) == 1: # If only one points per party then all parties get same number of data points
+        ratio_per_party = ratio_per_party[0]
+        if ratio_per_party: #if it is not none (none is the default value)
+            ratio_per_party=[ratio_per_party]*num_parties
+    elif len(ratio_per_party) != num_parties:
+        parser.error(RATIO_PER_PARTY_ERR)
 
     # Create folder to save party data
     folder = os.path.join("research", "data")
@@ -187,6 +197,6 @@ if __name__ == '__main__':
             if os.path.isfile(f_path):
                 os.unlink(f_path)
 
-    save_data(points_per_party, folder)
+    save_data(points_per_party, folder, ratio_per_party)
 
 
