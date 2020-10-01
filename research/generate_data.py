@@ -78,7 +78,7 @@ def load_data(normalize=False,data_dir="research/source_data"):
     for idx,x in enumerate(test_files):
         x_test[idx],y_test[idx]=readFile(x)
     if(normalize):
-        x_test=(x_test-x_test.mean())/x_test.std()
+        x_test=(x_test-x_train.mean())/x_train.std()
     x_train,x_test=(x_train/255,x_test/255)
     return (x_train, y_train), (x_test, y_test)
 
