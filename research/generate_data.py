@@ -41,7 +41,7 @@ def print_statistics(i, x_test_pi, x_train_pi, nb_labels, y_train_pi):
     print('nb_x_train: ', np.shape(x_train_pi),
           'nb_x_test: ', np.shape(x_test_pi))
     for l in range(nb_labels):
-        print('* Label ', l, ' samples: ', (y_train_pi == l).sum())
+        print('* ', "Benign" if l else "Malignant", ' samples: ', (y_train_pi == l).sum())
 
 
 def readFile(path):
