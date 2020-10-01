@@ -106,14 +106,14 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
 
     if label_probs:
         # Sample by provided probablities
-        train_probs = {0:label_probs[0],1:label_probs[1]}
-        test_probs = {0:label_probs[0],1:label_probs[1]}
+        train_probs = [{1:prob,0:1-prob} for prob in label_probs]
+        #test_probs = {0:label_probs[0],1:label_probs[1]}
     else:
         # Sample according to source label distribution
-        train_probs = {
-            label: train_counts[int(label)] / float(num_train) for label in labels}
-        test_probs = {label: test_counts[int(label)] /
-                      float(num_test) for label in te_labels}
+        train_probs = [{
+            label: train_counts[int(label)] / float(num_train) for label in labels}]*nb_parties
+        #test_probs = [{label: test_counts[int(label)] /
+        #              float(num_test) for label in te_labels}]*nb_parties
 
     def update_probs_and_data(probs, x, y, indices):
         probs=np.delete(probs,indices)
@@ -125,7 +125,7 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
 
     for idx, dp in enumerate(nb_dp_per_party):
         print(idx,dp)
-        train_p = np.array([train_probs[int(y_train[x])]
+        train_p = np.array([train_probs[idx][int(y_train[x])]
                             for x in range(num_train)])
         train_p /= np.sum(train_p)
         train_indices = np.random.choice(num_train, dp, p=train_p,replace=False)
