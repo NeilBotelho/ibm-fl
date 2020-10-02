@@ -43,8 +43,6 @@ else:
 
 input_shape = (224,224,3)
 lr = 1e-5
-epochs = 25
-batch_size = 64
 
 model = ResNet50(include_top=True,
                  weights= None,
@@ -58,7 +56,7 @@ model.compile(optimizer = Adam(lr) ,
               metrics=["accuracy"])
 
 history = model.fit(X_train, y_train, validation_split=0.2,
-                    epochs= 25, batch_size= 80, verbose=2, 
+                    epochs= 25, batch_size= 64, verbose=2, 
                     
                    )
 
