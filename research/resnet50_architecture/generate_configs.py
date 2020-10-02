@@ -88,7 +88,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
         axis=1
     # model = Sequential()
     epochs = 25
-    batch_size = 64
+    batch_size = 80
 
     model = ResNet50(include_top=True,
                 weights= None,
