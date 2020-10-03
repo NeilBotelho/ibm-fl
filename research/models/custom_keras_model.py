@@ -174,8 +174,8 @@ class KerasFLModel(FLModel):
         with self.graph.as_default():
             set_session(self.sess)
             history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs,callbacks=[earlyStopping])
-        for label in self.model.metrics_names:
-            plt.plot(history.history[label],label=label) 
+        # for label in self.model.metrics_names:
+            # plt.plot(history.history[label],label=label) 
         # plt.plot(history.history["loss"],label="loss")
         plt.legend()
         plt.savefig(full_path.joinpath(filename))
