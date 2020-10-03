@@ -14,7 +14,6 @@ from ibmfl.data.data_handler import DataHandler
 from ibmfl.util.datasets import load_mnist
 from sklearn.preprocessing import OneHotEncoder
 
-encoder = OneHotEncoder()
 logger = logging.getLogger(__name__)
 
 
@@ -77,8 +76,8 @@ class KerasDataHandler(DataHandler):
         print(x_test.shape[0], 'test samples')
 
         # convert class vectors to binary class matrices
-        y_train = encoder.fit_transform(y_train.reshape(-1,1)).toarray()
-        y_test = encoder.transform(y_test.reshape(-1,1)).toarray()
+        y_train = (np.eye(num_classes)[y_train]).squeeze()
+        y_test = np.eye(num_classes)[y_test].squeeze()
 
         return (x_train, y_train), (x_test, y_test)
 
