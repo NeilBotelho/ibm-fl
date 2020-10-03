@@ -75,7 +75,7 @@ class KerasFLModel(FLModel):
             self.is_keras = False
 
         # Default values for local training
-        self.batch_size = 80 # Make this 10 or lower if you get memory errors
+        self.batch_size = 30 # Make this 10 or lower if you get memory errors
         self.epochs = 1
         self.steps_per_epoch = 100
 
@@ -170,9 +170,10 @@ class KerasFLModel(FLModel):
         full_path.joinpath(f"{self.model_name}").mkdir(parents=True, exist_ok=True)
         x = train_data[0]
         y = train_data[1]
+        earlyStopping=keras.callbacks.EarlyStopping(monitor='loss', patience=3)
         with self.graph.as_default():
             set_session(self.sess)
-            history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs)
+            history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs,callbacks=[earlyStopping])
         for label in self.model.metrics_names:
             plt.plot(history.history[label],label=label) 
         # plt.plot(history.history["loss"],label="loss")
