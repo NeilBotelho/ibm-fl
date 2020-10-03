@@ -1,0 +1,20 @@
+MODEL:
+lr=1e-3
+num_classes = 2
+IMG_SIZE=112
+model.add(Conv2D(32, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal()))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+model.add(Flatten())
+model.add(Dense(128, activation='relu',kernel_initializer=keras.initializers.glorot_normal()))
+model.add(Dropout(0.5))
+model.add(Dense(num_classes, activation='softmax',kernel_initializer=keras.initializers.glorot_normal()))
+
+model.compile(loss=keras.losses.categorical_crossentropy,
+              optimizer=keras.optimizers.Adam(lr=lr,beta_1=0.9),
+              metrics=['accuracy'])
+
+BATCH SIZE:30 
+
+BEST TEST ACCURACY: 77
+------------------------------------------------------------------------------------------------------------------------------
