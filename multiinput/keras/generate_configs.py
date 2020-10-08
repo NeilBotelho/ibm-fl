@@ -88,6 +88,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
     imageInputs=Input(shape=input_shape)
     tabularInputs=Input(shape=(11,))
 
+    convModel=Conv2D(8, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal())(imageInputs)
     convModel=Conv2D(32, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal())(convModel)
     convModel=MaxPooling2D(pool_size=(2, 2))(convModel)
     convModel=Dropout(0.5)(convModel)
