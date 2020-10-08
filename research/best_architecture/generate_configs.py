@@ -33,8 +33,8 @@ def get_fusion_config():
 def get_local_training_config():
     local_training_handler = {
         'name': 'LocalTrainingHandler',
-        # 'name': 'FedAvgLocalTrainingHandler',
         'path': 'ibmfl.party.training.local_training_handler'
+        # 'name': 'FedAvgLocalTrainingHandler',
         # 'path': 'ibmfl.party.training.fedavg_local_training_handler'
     }
     return local_training_handler
@@ -49,7 +49,7 @@ def get_hyperparams():
         },
         'local': {
             'training': {
-                'epochs': 7
+                'epochs': 6
             },
             'optimizer': {
                 'lr': 0.01
@@ -75,7 +75,7 @@ def get_data_handler_config(party_id, dataset, folder_data, is_agg=False):
 def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
     if is_agg:
         return None
-    lr=1e-3
+    lr=1e-4
     num_classes = 2
     IMG_SIZE=112
     img_rows, img_cols = IMG_SIZE,IMG_SIZE
@@ -90,11 +90,9 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
                  activation='relu',
                  input_shape=input_shape,
                  kernel_initializer=keras.initializers.glorot_normal()))
-    model.add(BatchNormalization(axis=axis,momentum=0.9))
     model.add(Conv2D(32, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal()))
-    model.add(BatchNormalization(axis=axis,momentum=0.9))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
+    model.add(Dropout(0.5))
     model.add(Flatten())
     model.add(Dense(128, activation='relu',kernel_initializer=keras.initializers.glorot_normal()))
     model.add(Dropout(0.5))
