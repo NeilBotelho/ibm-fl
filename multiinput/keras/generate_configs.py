@@ -43,13 +43,13 @@ def get_local_training_config():
 def get_hyperparams():
     hyperparams = {
         'global': {
-            'rounds': 3,
+            'rounds': 1,
             'termination_accuracy': 0.9,
             'max_timeout': 600
         },
         'local': {
             'training': {
-                'epochs': 3
+                'epochs': 4
             },
             'optimizer': {
                 'lr': 0.01
