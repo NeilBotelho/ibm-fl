@@ -45,43 +45,28 @@ class KerasDataHandler(DataHandler):
         num_classes = 2
         IMG_SIZE=112
         img_rows, img_cols = IMG_SIZE,IMG_SIZE
-        # if self.file_name is None:
-        #     (train_im, train_y), (test_im, test_y) = load_mnist()
-        #     # Reduce datapoints to make test faster
-        #     train_im = train_im[:nb_points]
-        #     train_y = train_y[:nb_points]
-        #     test_im = test_im[:nb_points]
-        #     test_y = test_y[:nb_points]
-        # else:
+
         try:
             logger.info('Loaded training data from ' + str(self.file_name))
             data_train = np.load(self.file_name)
-            train_im = tf.convert_to_tensor(data_train['train_im'])
-            train_tab = tf.convert_to_tensor(data_train['train_tab'])
-            train_y = tf.convert_to_tensor(data_train['train_y'])
-            test_im = tf.convert_to_tensor(data_train['test_im'])
-            test_tab = tf.convert_to_tensor(data_train['test_tab'])
-            test_y = tf.convert_to_tensor(data_train['test_y'])
+            train_im = data_train['train_im']
+            train_tab = data_train['train_tab']
+            train_y = data_train['train_y']
+            test_im = data_train['test_im']
+            test_tab = data_train['test_tab']
+            test_y = data_train['test_y']
         except Exception:
             raise IOError('Unable to load training data from path '
                           'provided in config file: ' +
                           self.file_name)
 
-        if self.channels_first:
-            train_im = train_im.reshape(train_im.shape[0], 3, img_rows, img_cols)
-            test_im = test_im.reshape(test_im.shape[0], 3, img_rows, img_cols)
-        else:
-            train_im = train_im.reshape(train_im.shape[0], img_rows, img_cols, 3)
-            test_im = test_im.reshape(test_im.shape[0], img_rows, img_cols, 3)
 
         print('train_im shape:', train_im.shape)
         print(train_im.shape[0], 'train samples')
         print(test_im.shape[0], 'test samples')
 
         # convert class vectors to binary class matrices
-        train_y = (np.eye(num_classes)[train_y]).squeeze()
-        test_y = np.eye(num_classes)[test_y].squeeze()
-        return ((train_im, train_tab), train_y), ((test_im, test_tab), test_y)
+        return ([train_im, train_tab], train_y), ([test_im, test_tab], test_y)
 
 
 class KerasDataGenerator(DataHandler):
