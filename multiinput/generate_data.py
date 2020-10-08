@@ -118,7 +118,6 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
         #test_probs = {0:label_probs[0],1:label_probs[1]}
     else:
         # Sample according to source label distribution
-        for n in labels:
         train_probs = [{
             label: train_counts[int(label)] / float(num_train) for label in labels}]*nb_parties
         #test_probs = [{label: test_counts[int(label)] /
