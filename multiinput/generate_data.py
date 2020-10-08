@@ -84,7 +84,6 @@ def load_data(normalize=False,data_dir="multiinput/source_data"):
     images=images/255
     #getting y values
     y=dummy_df["labels"].map(lambda x: 1 if x =="benign" else 0).values
-    # y=np.eye(2)[y]
     dummy_df=dummy_df.drop(["image","labels"],axis=1)
 
     x=dummy_df.to_numpy(dtype=float)
@@ -103,13 +102,12 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
     train_im, train_tab, train_y, test_im, test_tab, test_y = load_data()
     labels, train_counts = np.unique(train_y, return_counts=True)
     te_labels, test_counts = np.unique(test_y, return_counts=True)
+
     if np.all(np.isin(labels, te_labels)):
         print("Warning: test set and train set contain different labels")
 
     num_train = int(np.shape(train_y)[0])
-    print(f"NUMTRAIN {num_train}")
 
-    print(f"{num_train}type{type(num_train)}")
     num_test = np.shape(test_y)[0]
     num_labels = 2
     nb_parties = len(nb_dp_per_party)
@@ -121,8 +119,6 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
     else:
         # Sample according to source label distribution
         for n in labels:
-            print(type(n),n)
-            # print(int(n))
         train_probs = [{
             label: train_counts[int(label)] / float(num_train) for label in labels}]*nb_parties
         #test_probs = [{label: test_counts[int(label)] /
@@ -136,9 +132,7 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
         #updating the probabilities to get the sum to 1
         probs=probs/sum(probs)
         return probs,x,images,y
-    print(num_train)
     for idx, dp in enumerate(nb_dp_per_party):
-        print(idx,dp)
         train_p = np.array([train_probs[idx][int(train_y[x])]
                             for x in range(num_train)])
         train_p /= np.sum(train_p)
@@ -157,7 +151,8 @@ def save_data(nb_dp_per_party, party_folder, label_probs=None):
         test_im_pi = test_im[0:num_test//nb_parties]
         test_tab_pi = test_tab[0:num_test//nb_parties]
         test_y_pi = test_y[0:num_test//nb_parties]
-
+        test_y_pi=np.eye(2)[test_y_pi]
+        train_y_pi=np.eye(2)[train_y_pi]
         # Now put it all in an npz
         name_file = 'data_party' + str(idx) + '.npz'
         name_file = os.path.join(party_folder, name_file)
