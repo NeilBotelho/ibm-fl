@@ -11,14 +11,14 @@ def get_datahandler_config(dh_name, folder_data, party_id, is_agg):
     print(f"Datahandler: {str(folder_data)},str(party")
     data = {
             'name': 'KerasDataHandler',
-            'path': 'research.keras.keras_datahandler',
+            'path': 'multiinput.keras.keras_datahandler',
             'info': {
                 'npz_file': os.path.join(str(folder_data), 'data_party' + str(party_id) + '.npz')
             }
         }
     if is_agg:
             data['info'] = {
-                'npz_file': os.path.join("research", "source_data", "train")
+                'npz_file': os.path.join("multiinput", "source_data", "train")
             }
     return data
 
@@ -45,7 +45,7 @@ def get_hyperparams():
         'global': {
             'rounds': 3,
             'termination_accuracy': 0.9,
-            'max_timeout': 60
+            'max_timeout': 600
         },
         'local': {
             'training': {
@@ -88,7 +88,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
     imageInputs=Input(shape=input_shape)
     tabularInputs=Input(shape=(11,))
 
-    convModel=Conv2D(32, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal())(imageInputs)
+    convModel=Conv2D(32, (3, 3), activation='relu',kernel_initializer=keras.initializers.glorot_normal())(convModel)
     convModel=MaxPooling2D(pool_size=(2, 2))(convModel)
     convModel=Dropout(0.5)(convModel)
     convModel=Flatten()(convModel)
@@ -126,7 +126,7 @@ def get_model_config(folder_configs, dataset, is_agg=False, party_id=0):
 
     model = {
         'name': 'KerasFLModel',
-        'path': 'research.models.custom_keras_model',
+        'path': 'multiinput.models.custom_keras_model',
         'spec': spec
     }
 
