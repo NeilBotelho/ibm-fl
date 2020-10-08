@@ -136,13 +136,13 @@ class KerasFLModel(FLModel):
 
         try:
 
-            if type(train_data) is tuple and type(train_data[0]) is np.ndarray:
-                self.fit(
-                    train_data, batch_size=batch_size, epochs=epochs)
+            # if type(train_data) is tuple and type(train_data[0]) is np.ndarray:
+            self.fit(
+                train_data, batch_size=batch_size, epochs=epochs)
 
-            else:
-                self.fit_generator(
-                    train_data, batch_size=batch_size, epochs=epochs, steps_per_epoch=steps_per_epoch)
+            # else:
+                # self.fit_generator(
+                    # train_data, batch_size=batch_size, epochs=epochs, steps_per_epoch=steps_per_epoch)
 
         except Exception as e:
             logger.exception(str(e))
