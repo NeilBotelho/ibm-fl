@@ -170,10 +170,9 @@ class KerasFLModel(FLModel):
         full_path.joinpath(f"{self.model_name}").mkdir(parents=True, exist_ok=True)
         x = train_data[0]
         y = train_data[1]
-        earlyStopping=keras.callbacks.EarlyStopping(monitor='acc', patience=3)
         with self.graph.as_default():
             set_session(self.sess)
-            history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs,callbacks=[earlyStopping])
+            history=self.model.fit(x, y, batch_size=self.batch_size, epochs=epochs)
         # for label in self.model.metrics_names:
             # plt.plot(history.history[label],label=label) 
         # plt.plot(history.history["loss"],label="loss")
