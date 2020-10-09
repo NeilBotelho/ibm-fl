@@ -5,9 +5,9 @@ from joblib import Parallel, delayed
 import numpy as np
 from tqdm import tqdm
 
-input_folder="source_data/isic_data/Images" #enter the name of the folder where test and train folders are saved
+input_folder="source_data/isic_data/Images" #enter the name of the folder of images from isic archive
 
-output_folder="source_data/isic_data" #enter the directory where all the processed data is to be stored
+output_folder="source_data/isic_data" #enter the directory where the processed data is to be stored
 output_folder=os.path.join(output_folder,"processed_images/") 
 
 # this is for if output folders don't already exist, then to create them
@@ -44,8 +44,8 @@ def process_images(input_folder,output_folder,res):
             img,output_folder,res
         ) for img in tqdm(images)
     )
+#incase you wanted to save the images to npy, uncomment the function call in main
 def savenpyfiles(input_folder,out_folder):
-    #name for npy file is created based on where the data comes from
     npyfilename="isic_112.npy"
     
     read = lambda imname: np.asarray(Image.open(imname).convert("RGB"))
@@ -57,4 +57,4 @@ def savenpyfiles(input_folder,out_folder):
 if __name__=="__main__":
     process_images(input_folder,output_folder,res=(112,112)) 
     outputfolder_npy="source_data/npy"
-    savenpyfiles(output_folder,outputfolder_npy)
+    #savenpyfiles(output_folder,outputfolder_npy)
