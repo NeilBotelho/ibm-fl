@@ -362,9 +362,9 @@ class KerasFLModel(FLModel):
         if filename is None:
             filename = f"model_{time.time()}.h5"
 
-        full_path = super().get_model_absolute_path("")
+        full_path = Path(super().get_model_absolute_path(""))
         full_path.joinpath(f"{self.model_name}").mkdir(parents=True, exist_ok=True)
-        self.model.save(full_path.joinpath(filename))#Would be $MODEL_DIR/filename
+        self.model.save(str(full_path.joinpath(filename)))#Would be $MODEL_DIR/filename
         logger.info('Model saved in path: %s.', full_path)
         return filename
 
